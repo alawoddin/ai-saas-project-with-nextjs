@@ -6,7 +6,7 @@ import { UserRole, SubscriptionTier } from "@prisma/client";
 import { email } from "zod";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    adapter: PrismaAdapter(prisma), 
+    adapter: PrismaAdapter(Prisma), 
     session: {
         strategy: "jwt",
     },
@@ -36,9 +36,42 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("Invalid email or password");
         }
         /// Verify password 
+        const isPasswordVaild = await bcrypt.compare(
+            credentials.password as string,
+            user.passwordHash
+        );
 
+        if (!isPasswordVaild) {
+            throw new Error("Invalid email or password");
+        }
 
+        // Return user object 
+        return {
+            id: user.id,
+            email: user.email,
+            name: user.fullName,
+            role: user.role,
+            subscriptiontier: user.subscriptionTier
+             }; 
+           },
+        }),
+    ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.role = user.role;
+                token.subscriptionTier = user.subscriptionTier;
             }
-        })
-    ]
-})
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                session.user.id = token.id as string;
+                session.user.role = token.role as UserRole;
+                session.user.subscriptionTier = token.subscriptionTier as SubscriptionTier;
+            }
+            return session;
+        },
+    } ,
+});
