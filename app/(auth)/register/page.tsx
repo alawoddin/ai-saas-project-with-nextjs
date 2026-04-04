@@ -1,15 +1,11 @@
 "use client"
-
-
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
-
 export default function RegisterPage(){
 
-       const router = useRouter()
+    const router = useRouter()
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -25,19 +21,36 @@ export default function RegisterPage(){
         setLoading(true);
 
         try {
-            
-        } catch (error) {
-            
+            const response = await fetch("/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Registration failed");
+            }
+
+            // Redireact to login page after suucessfull register
+            router.push("/login?registered=true")
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+            setError(err.message)
+        } finally{
+            setLoading(false)
         }
+    };
 
 
-
-    }
 
 
     return (
-
-         <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center py-12 px-4">
 <div className="max-w-md w-full">
 {/* Logo */}
 <div className="text-center mb-8">
@@ -59,13 +72,14 @@ export default function RegisterPage(){
 
 {/* Registration Form */}
 <div className="bg-white rounded-2xl shadow-xl p-8">
-    
+    { error && (
     <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-700 text-sm">error</p>
-    </div>
+        <p className="text-red-700 text-sm">{error}</p>
+    </div> 
+     )}
     
 
-    <form  className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
     <div>
         <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
         Full Name
@@ -74,9 +88,10 @@ export default function RegisterPage(){
         id="fullName"
         type="text"
         required
-        value= "test" 
+        value= {formData.fullName}
+        onChange={(e) => setFormData({ ...formData, fullName: e.target.value }) }
         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
-        placeholder="John Doe"
+        placeholder="demo"
         />
     </div>
 
@@ -88,9 +103,10 @@ export default function RegisterPage(){
         id="email"
         type="email"
         required
-        value="email" 
+        value={formData.email} 
+        onChange={(e) => setFormData({ ...formData, email: e.target.value }) }
         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
-        placeholder="john@example.com"
+        placeholder="demo@example.com"
         />
     </div>
 
@@ -103,8 +119,8 @@ export default function RegisterPage(){
         type="password"
         required
         minLength={6}
-        value="password" 
-            
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value }) }
         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
         placeholder="••••••••"
         />
@@ -115,9 +131,10 @@ export default function RegisterPage(){
 
     <button
         type="submit" 
+        disabled={loading}
         className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]"
     >
-        Create Account
+       { loading ? "Creating account..." : "Create Account"} 
     </button>
     </form>
 
@@ -147,8 +164,5 @@ export default function RegisterPage(){
 </p>
 </div>
 </div>
-
-
-        
     );
 }
