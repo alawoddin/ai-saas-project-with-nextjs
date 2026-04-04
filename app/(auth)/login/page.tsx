@@ -55,10 +55,10 @@ export default function LoginPage(){
 <div className="text-center mb-8">
     <Link href="/" className="inline-flex items-center space-x-2">
     <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-        <span className="text-white font-bold text-2xl">B</span>
+        <span className="text-white font-bold text-2xl">K</span>
     </div>
     <span className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-        BookWise
+        KhedmatBook
     </span>
     </Link>
     <h1 className="mt-6 text-3xl font-bold text-gray-900">

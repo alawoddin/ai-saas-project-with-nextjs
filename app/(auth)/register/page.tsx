@@ -56,10 +56,10 @@ export default function RegisterPage(){
 <div className="text-center mb-8">
     <Link href="/" className="inline-flex items-center space-x-2">
     <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-        <span className="text-white font-bold text-2xl">B</span>
+        <span className="text-white font-bold text-2xl">K</span>
     </div>
     <span className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-        BookWise
+        KhedmatBook
     </span>
     </Link>
     <h1 className="mt-6 text-3xl font-bold text-gray-900">
@@ -151,17 +151,7 @@ export default function RegisterPage(){
     </div>
 </div>
 
-{/* Terms */}
-<p className="mt-8 text-center text-xs text-gray-500">
-    By creating an account, you agree to our{" "}
-    <Link href="/terms" className="underline hover:text-gray-700">
-    Terms of Service
-    </Link>{" "}
-    and{" "}
-    <Link href="/privacy" className="underline hover:text-gray-700">
-    Privacy Policy
-    </Link>
-</p>
+
 </div>
 </div>
     );
