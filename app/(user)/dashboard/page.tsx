@@ -1,11 +1,52 @@
 "use client"
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState, useEffect } from "react";
 import Link from "next/link";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useRouter } from "next/navigation";
 
+interface User {
+    id: string;
+    email: string;
+    fullName: string;
+    subscriptionTier: string;
+    subscriptionStatus: string;
+    subscriptionStartDate: string | null;
+    subscriptionEndDate: string | null;
+    audioListenTime: number;
+    createdAt:string;
+}
+
+interface SubscriptionOrder {
+    id: number;
+    planType: string;
+    amount: string;
+    orderStatus: string;
+    createdAt: string; 
+}
+
+
 export default function DashboardPage(){
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null);
+  const [orders, setOrders] = useState<SubscriptionOrder[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUserData();
+    fetchOrders();
+  },[]);
+
+  async function fetchUserData(){
+
+  }
+
+    async function fetchOrders(){
+    
+  }
+
+
+
+
+
     return (
         <div className="min-h-screen bg-gray-50">
       {/* Navigation Header */}
