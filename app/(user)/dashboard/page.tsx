@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 interface User {
     id: string;
@@ -143,17 +144,23 @@ const benefits = getTierBenefits(user.subscriptionTier);
 const pendingOrder = orders.find((o) => o.orderStatus === "PENDING");
 
 const handleSignOut = async () => {
-    try {
-        const response = await fetch("/api/auth/signout",{
-            method: "POST"
-        });
-        if (response.ok) {
-            window.location.href = "/";
-        }
-    } catch (error) {
-        console.error("Sign out error", error);
-    }
+    await signOut({ callbackUrl: "/" });
 };
+
+
+
+// const handleSignOut = async () => {
+//     try {
+//         const response = await fetch("/api/auth/signout",{
+//             method: "POST"
+//         });
+//         if (response.ok) {
+//             window.location.href = "/";
+//         }
+//     } catch (error) {
+//         console.error("Sign out error", error);
+//     }
+// };
 
 
 
