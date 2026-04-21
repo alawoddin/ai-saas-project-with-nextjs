@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { auth } from "@/lib/db/auth";
+import { auth, signOut } from "@/lib/db/auth";
 
 export default async function AdminLayout({
     children,
@@ -30,7 +30,19 @@ export default async function AdminLayout({
         <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">{session.user.name}</span>
             <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">View Site</Link>
-           Sign Out
+               <form
+      action={async () => {
+        "use server";
+        await signOut({ redirectTo: "/admin/login" });
+      }}
+    >
+      <button
+        type="submit"
+        className="text-sm text-gray-600 hover:text-gray-900"
+      >
+        Sign Out
+      </button>
+    </form>
         </div>
         </div>
     </div>
